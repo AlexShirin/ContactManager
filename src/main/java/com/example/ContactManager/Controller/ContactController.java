@@ -1,10 +1,8 @@
 package com.example.ContactManager.Controller;
 
 import com.example.ContactManager.Model.Contact;
-import com.example.ContactManager.Repository.ContactRepository;
 import com.example.ContactManager.Service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

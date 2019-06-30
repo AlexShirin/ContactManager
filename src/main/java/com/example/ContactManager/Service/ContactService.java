@@ -5,13 +5,8 @@ import com.example.ContactManager.Repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.Null;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -22,8 +17,7 @@ public class ContactService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private ContactService() {
-    }
+    private ContactService() {}
 
     @Autowired
     public ContactService(ContactRepository cr) {
@@ -52,7 +46,7 @@ public class ContactService {
 
     public void deleteContactByPattern(Contact c) {
         jdbcTemplate.update("DELETE FROM contact WHERE FIRST_NAME=? OR LAST_NAME=? OR PHONE=? OR EMAIL=? OR COMPANY=?",
-                new Object[] {c.getFirstName(), c.getLastName(), c.getPhone(), c.getEmail(), c.getCompany()});
+                new Object[]{c.getFirstName(), c.getLastName(), c.getPhone(), c.getEmail(), c.getCompany()});
     }
 
     public long count() {
@@ -82,7 +76,7 @@ public class ContactService {
 
     public List<Contact> findContact(Contact c) {
         return jdbcTemplate.query("SELECT * FROM contact WHERE FIRST_NAME=? OR LAST_NAME=? OR PHONE=? OR EMAIL=? OR COMPANY=?",
-                new Object[] {c.getFirstName(), c.getLastName(), c.getPhone(), c.getEmail(), c.getCompany()},
+                new Object[]{c.getFirstName(), c.getLastName(), c.getPhone(), c.getEmail(), c.getCompany()},
                 new BeanPropertyRowMapper(Contact.class));
     }
 }
