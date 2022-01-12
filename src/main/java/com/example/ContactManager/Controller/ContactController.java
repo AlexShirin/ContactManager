@@ -21,7 +21,7 @@ public class ContactController {
     //Get all contacts (GET) if no param or
     //Get first N contacts (GET) if param is present
     @GetMapping(value = "", produces = "application/json")
-    private List<Contact> getFirstNContacts(@RequestParam(required = false) Optional<Long> count, @RequestParam(required = false) Optional<String> id) {
+    private List<Contact> getFirstNContacts(@RequestParam(required = false) Optional<Long> count) {
         if (!count.isPresent())
             return contactService.getAllContacts();
         else

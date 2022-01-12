@@ -46,7 +46,7 @@ public class ContactService {
     }
 
     @Autowired
-    private ContactService(ContactRepository contactRepository, JdbcTemplate jdbcTemplate) {
+    private ContactService(ContactRepository contactRepository) {
         this.contactRepository = contactRepository;
     }
 
