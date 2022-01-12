@@ -1,4 +1,4 @@
-package com.example.ContactManager.Service;
+package com.example.ContactManager.Exception;
 
 public class ContactNotFoundException extends RuntimeException {
     public ContactNotFoundException(long id) {

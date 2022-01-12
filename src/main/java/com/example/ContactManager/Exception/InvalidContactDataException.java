@@ -1,4 +1,4 @@
-package com.example.ContactManager.Service;
+package com.example.ContactManager.Exception;
 
 import com.example.ContactManager.Model.Contact;
 

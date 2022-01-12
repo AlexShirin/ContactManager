@@ -1,5 +1,6 @@
-package com.example.ContactManager.Service;
+package com.example.ContactManager.Exception.ExceptionHandler;
 
+import com.example.ContactManager.Exception.ContactNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -7,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-class ContactNotFoundAdvice {
+class ContactNotFoundHandler {
 
     @ResponseBody
     @ExceptionHandler(ContactNotFoundException.class)
