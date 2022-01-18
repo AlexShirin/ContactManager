@@ -2,99 +2,85 @@ package com.example.ContactManager.Service;
 
 import com.example.ContactManager.Exception.ContactNotFoundException;
 import com.example.ContactManager.Model.Contact;
+import com.example.ContactManager.Model.ContactDto;
 import com.example.ContactManager.Repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.Optional;
 
 import static com.example.ContactManager.Service.ContactServiceUtils.*;
+import static com.example.ContactManager.utils.ContactConverter.*;
 
 @Service
 public class ContactService {
+    private static final int DEFAULT_PAGE_SIZE = 10;
+
     private final ContactRepository contactRepository;
-    private final int DEFAULT_PAGE_SIZE = 10;
 
     @PostConstruct
-    private void init() { initContacts(contactRepository); }
+    private void init() {
+        initContacts(contactRepository);
+    }
 
     @Autowired
     private ContactService(ContactRepository contactRepository) {
         this.contactRepository = contactRepository;
     }
 
-    public List<Contact> getAllContacts() {
-        return contactRepository.findAll();
-    }
-
-    public Contact getContactById(long id) {
-        return contactRepository.findById(id).get();
-    }
-
-    public List<Contact> getFirstNContacts(Long limit) {
+    public List<ContactDto> getFirstNContacts(Long limit) {
         int pageSize;
-        if (limit == null || limit > DEFAULT_PAGE_SIZE) {
+        if (limit == null || limit < 1 || limit > DEFAULT_PAGE_SIZE) {
             pageSize = DEFAULT_PAGE_SIZE;
-        } else if (limit < 1) {
-            pageSize = 1;
         } else {
             pageSize = limit.intValue();
         }
-        return contactRepository
-                .findAll(PageRequest.of(0, pageSize))
-                .getContent();
+        return convertContactList2Dto(contactRepository.findAll(PageRequest.of(0, pageSize)).getContent());
     }
 
-    public Contact saveContact(Contact contact) {
-        Optional<Contact> one = contactRepository.findOne(Example.of(contact));
-        if (one.isPresent()) {
-            return one.get();
-        }
+    public ContactDto saveContact(ContactDto contactDto) {
+        Contact contact = convertDto2Contact(contactDto);
         validateContact(contact);
-        return contactRepository.save(contact);
+        List<Contact> one = contactRepository.findAllByEmail(
+                contact.getEmail(),
+                PageRequest.of(0, DEFAULT_PAGE_SIZE));
+        if (!one.isEmpty())
+            throw new ContactNotFoundException(
+                    "Cannot add contact: another contact found with given pattern\n" +
+                            contact.toString() + "\nAt least email must be unique");
+        contactRepository.save(contact);
+        return convertContact2Dto(contact);
     }
 
-    public List<Contact> findMatchingContacts(Contact contactPattern) {
-        Contact fixedContact = fixContact(contactPattern);
-        return contactRepository.findByIdOrFirstNameOrLastNameOrPhoneOrEmailOrCompany(
-                fixedContact.getId(),
-                fixedContact.getFirstName(),
-                fixedContact.getLastName(),
-                fixedContact.getPhone(),
-                fixedContact.getEmail(),
-                fixedContact.getCompany()
-        );
+    public List<ContactDto> findMatchingContacts(ContactDto contactDtoPattern) {
+        return convertContactList2Dto(ContactServiceUtils
+                .findContactsByPattern(contactRepository, contactDtoPattern));
     }
 
-    public Contact updateContact(Contact contact) {
-        if (contactRepository.existsById(contact.getId())) {
-            validateContact(contact);
-            return contactRepository.save(contact);
-        } else
-            throw new ContactNotFoundException(contact.getId());
+    public ContactDto updateContact(ContactDto contactDto) {
+        Contact contact = convertDto2Contact(contactDto);
+        validateContact(contact);
+        List<Contact> one = contactRepository.findAllByEmail(
+                contact.getEmail(),
+                PageRequest.of(0, DEFAULT_PAGE_SIZE));
+        if (one.size() != 1)
+            throw new ContactNotFoundException(
+                    "Cannot update contact: no contact found with given pattern\n" + contact.toString());
+        contactRepository.save(contact);
+        return convertContact2Dto(contact);
     }
 
-    public Contact deleteContactById(long id) {
-        Optional<Contact> one = contactRepository.findById(id);
-        if (one.isPresent()) {
-            contactRepository.deleteById(id);
-            return one.get();
-        } else
-            throw new ContactNotFoundException(id);
-    }
-
-    public List<Contact> deleteMatchingContacts(Contact contactPattern) {
-        List<Contact> matchingContacts = findMatchingContacts(contactPattern);
-        if (matchingContacts == null) { return null; }
-        for (Contact c: matchingContacts) {
+    public List<ContactDto> deleteMatchingContacts(ContactDto contactDtoPattern) {
+        Contact contact = convertDto2Contact(contactDtoPattern);
+        List<Contact> list = findContactsByPattern(contactRepository, contactDtoPattern);
+        if (list.isEmpty())
+            throw new ContactNotFoundException(
+                    "Cannot delete contacts: no contact found with given pattern\n" + contact.toString());
+        for (Contact c : list)
             contactRepository.deleteById(c.getId());
-        }
-        return matchingContacts;
+        return convertContactList2Dto(list);
     }
 }
 

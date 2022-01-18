@@ -2,10 +2,15 @@ package com.example.ContactManager.Service;
 
 import com.example.ContactManager.Exception.InvalidContactDataException;
 import com.example.ContactManager.Model.Contact;
+import com.example.ContactManager.Model.ContactDto;
 import com.example.ContactManager.Repository.ContactRepository;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.example.ContactManager.utils.ContactConverter.convertContactList2Dto;
+import static com.example.ContactManager.utils.ContactConverter.convertDto2Contact;
 
 public class ContactServiceUtils {
     public static Contact validateContact(Contact contact) {
@@ -45,29 +50,41 @@ public class ContactServiceUtils {
         return validContact;
     }
 
-    public static void initContacts(ContactRepository contactRepository) {
-        contactRepository.save(new Contact(
+    public static List<Contact> findContactsByPattern(ContactRepository repository, ContactDto contactDtoPattern) {
+        Contact contact = convertDto2Contact(contactDtoPattern);
+        Contact fixedContact = fixContact(contact);
+        return repository.findAllByFirstNameOrLastNameOrPhoneOrEmailOrCompany(
+                fixedContact.getFirstName(),
+                fixedContact.getLastName(),
+                fixedContact.getPhone(),
+                fixedContact.getEmail(),
+                fixedContact.getCompany()
+        );
+    }
+
+    public static void initContacts(ContactRepository repository) {
+        repository.save(new Contact(
                 "John",
                 "Dow",
                 "1111",
                 "email@mail.com",
                 "aaa")
         );
-        contactRepository.save(new Contact(
+        repository.save(new Contact(
                 "James",
                 "Dow",
                 "2222",
                 "email2@mail.com",
                 "bbb")
         );
-        contactRepository.save(new Contact(
+        repository.save(new Contact(
                 "John",
                 "Smith",
                 "3333",
                 "email3@mail.com",
                 "ccc")
         );
-        contactRepository.save(new Contact(
+        repository.save(new Contact(
                 "James",
                 "Smith",
                 "4444",
