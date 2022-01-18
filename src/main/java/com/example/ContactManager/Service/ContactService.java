@@ -13,37 +13,15 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.ContactManager.Service.ContactServiceUtils.fixContact;
-import static com.example.ContactManager.Service.ContactServiceUtils.validateContact;
+import static com.example.ContactManager.Service.ContactServiceUtils.*;
 
 @Service
 public class ContactService {
     private final ContactRepository contactRepository;
+    private final int DEFAULT_PAGE_SIZE = 10;
 
     @PostConstruct
-    private void init() {
-        contactRepository.save(new Contact(
-                "John",
-                "Dow",
-                "123456789",
-                "email@mail.com",
-                "qwe")
-        );
-        contactRepository.save(new Contact(
-                "James",
-                "Dow",
-                "123456788",
-                "email2@mail.com",
-                "rty")
-        );
-        contactRepository.save(new Contact(
-                "John",
-                "Smith",
-                "123456778",
-                "email3@mail.com",
-                "uio")
-        );
-    }
+    private void init() { initContacts(contactRepository); }
 
     @Autowired
     private ContactService(ContactRepository contactRepository) {
@@ -58,9 +36,17 @@ public class ContactService {
         return contactRepository.findById(id).get();
     }
 
-    public List<Contact> getFirstNContacts(long number) {
+    public List<Contact> getFirstNContacts(Long limit) {
+        int pageSize;
+        if (limit == null || limit > DEFAULT_PAGE_SIZE) {
+            pageSize = DEFAULT_PAGE_SIZE;
+        } else if (limit < 1) {
+            pageSize = 1;
+        } else {
+            pageSize = limit.intValue();
+        }
         return contactRepository
-                .findAll(PageRequest.of(0, (int) number))
+                .findAll(PageRequest.of(0, pageSize))
                 .getContent();
     }
 

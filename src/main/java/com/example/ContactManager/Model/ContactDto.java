@@ -2,51 +2,22 @@ package com.example.ContactManager.Model;
 
 import lombok.Data;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-
 @Data
-@Entity
-@Table(name = "contact")
-public class Contact {
-    @Id
-    @GeneratedValue
-    @Column(name = "id")
-    private Long id;
-
-    @Column(name = "first_name")
+public class ContactDto {
     private String firstName;
-
-    @Column(name = "last_name")
     private String lastName;
-
-    @Column(name = "phone")
     private String phone;
-
-    @Email
-    @Column(name = "email")
     private String email;
-
-    @Column(name = "company")
     private String company;
 
-    public Contact() {}
+    public ContactDto() {}
 
-    public Contact(String firstName, String lastName, String phone, String email, String company) {
-        this.id = 0L;
+    public ContactDto(String firstName, String lastName, String phone, String email, String company) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
         this.email = email;
         this.company = company;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getFirstName() { return firstName; }

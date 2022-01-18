@@ -2,6 +2,7 @@ package com.example.ContactManager.Service;
 
 import com.example.ContactManager.Exception.InvalidContactDataException;
 import com.example.ContactManager.Model.Contact;
+import com.example.ContactManager.Repository.ContactRepository;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,5 +43,36 @@ public class ContactServiceUtils {
         Contact validContact = new Contact(firstName, lastName, phone, email, company);
         validContact.setId(id);
         return validContact;
+    }
+
+    public static void initContacts(ContactRepository contactRepository) {
+        contactRepository.save(new Contact(
+                "John",
+                "Dow",
+                "1111",
+                "email@mail.com",
+                "aaa")
+        );
+        contactRepository.save(new Contact(
+                "James",
+                "Dow",
+                "2222",
+                "email2@mail.com",
+                "bbb")
+        );
+        contactRepository.save(new Contact(
+                "John",
+                "Smith",
+                "3333",
+                "email3@mail.com",
+                "ccc")
+        );
+        contactRepository.save(new Contact(
+                "James",
+                "Smith",
+                "4444",
+                "email4@mail.com",
+                "ddd")
+        );
     }
 }
