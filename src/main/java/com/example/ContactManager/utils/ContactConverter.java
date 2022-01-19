@@ -29,18 +29,6 @@ public class ContactConverter {
     }
 
     public static List<ContactDto> convertContactList2Dto(List<Contact> contactList) {
-//        List<ContactDto> contactDtos = new ArrayList<>();
-//        for (Contact contact : contactList) {
-//            contactDtos.add(new ContactDto(
-//                            contact.getFirstName(),
-//                            contact.getLastName(),
-//                            contact.getPhone(),
-//                            contact.getEmail(),
-//                            contact.getCompany()
-//                    )
-//            );
-//        }
-//        return contactDtos;
         return contactList.stream()
                 .map(ContactConverter::convertContact2Dto)
                 .collect(Collectors.toList());

@@ -23,7 +23,6 @@ public class Contact {
     @Column(name = "phone")
     private String phone;
 
-    @Email
     @Column(name = "email")
     private String email;
 
@@ -90,11 +89,11 @@ public class Contact {
     @Override
     public String toString() {
         return "Contact { " +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", phone='" + phone + '\'' +
-                ", email='" + email + '\'' +
-                ", company='" + company + '\'' +
-                " }";
+                "firstName='" + firstName + "'" +
+                ", lastName='" + lastName + "'" +
+                ", phone='" + phone + "'" +
+                ", email='" + email + "'" +
+                ", company='" + company + "'" +
+                " }\n";
     }
 }

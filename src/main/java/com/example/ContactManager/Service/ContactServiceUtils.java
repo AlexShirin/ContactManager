@@ -14,15 +14,15 @@ import static com.example.ContactManager.utils.ContactConverter.convertDto2Conta
 
 public class ContactServiceUtils {
     public static Contact validateContact(Contact contact) {
-        if (!contact.getFirstName().chars().allMatch(Character::isLetter))
-            throw new InvalidContactDataException(contact, "'First name' must contain only letters");
-        if (!contact.getLastName().chars().allMatch(Character::isLetter))
-            throw new InvalidContactDataException(contact, "'Last name' must contain only letters");
-        if (!contact.getPhone().chars().allMatch(Character::isDigit))
-            throw new InvalidContactDataException(contact, "'Phone' must contain only digits");
-        if (!isValidEmail(contact.getEmail()))
+        if (contact.getFirstName() == null || "".equals(contact.getFirstName()))
+            throw new InvalidContactDataException(contact, "'First name' can't be empty and must contain only letters");
+        if (contact.getLastName() == null || "".equals(contact.getLastName()))
+            throw new InvalidContactDataException(contact, "'Last name' can't be empty and must contain only letters");
+        if (contact.getPhone() == null || "".equals(contact.getPhone()) || !contact.getPhone().chars().allMatch(Character::isDigit))
+            throw new InvalidContactDataException(contact, "'Phone' can't be empty and must contain only digits");
+        if (contact.getEmail() == null || !isValidEmail(contact.getEmail()))
             throw new InvalidContactDataException(contact, "'Email' is invalid, permissible email pattern is 'email@server.com'");
-        if (contact.getCompany().isEmpty())
+        if (contact.getCompany() == null || "".equals(contact.getCompany()))
             throw new InvalidContactDataException(contact, "'Company' can't be empty");
         return contact;
     }
@@ -35,9 +35,14 @@ public class ContactServiceUtils {
     }
 
     public static Contact fixContact(Contact contact) {
-        if (contact == null) {
-            return new Contact();
-        }
+        if (contact == null) throw new InvalidContactDataException(null, "Contact can't be empty");
+        if ((contact.getFirstName() == null || "".equals(contact.getFirstName())) &&
+            (contact.getLastName() == null || "".equals(contact.getLastName())) &&
+            (contact.getPhone() == null || "".equals(contact.getPhone())) &&
+            (contact.getEmail() == null || "".equals(contact.getEmail())) &&
+            (contact.getCompany() == null || "".equals(contact.getCompany())))
+            throw new InvalidContactDataException(contact, "All contact fields can't be empty");
+
         Long id = contact.getId() == null ? 0L : contact.getId();
         String firstName = contact.getFirstName() == null ? "" : contact.getFirstName();
         String lastName = contact.getLastName() == null ? "" : contact.getLastName();

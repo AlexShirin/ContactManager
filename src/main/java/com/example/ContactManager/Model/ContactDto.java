@@ -1,13 +1,26 @@
 package com.example.ContactManager.Model;
 
+import com.example.ContactManager.validation.Marker;
 import lombok.Data;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 
 @Data
+//@Validated
 public class ContactDto {
+
+//    @NotBlank(groups = Marker.OnAddUpdate.class)
     private String firstName;
+//    @NotBlank(groups = Marker.OnAddUpdate.class)
     private String lastName;
+//    @Positive(groups = Marker.OnAddUpdate.class)
     private String phone;
+//    @Email(groups = Marker.OnAddUpdate.class)
     private String email;
+//    @NotBlank(groups = Marker.OnAddUpdate.class)
     private String company;
 
     public ContactDto() {}
