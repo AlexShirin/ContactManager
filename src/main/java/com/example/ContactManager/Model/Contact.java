@@ -10,7 +10,7 @@ import javax.validation.constraints.Email;
 @Table(name = "contact")
 public class Contact {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 

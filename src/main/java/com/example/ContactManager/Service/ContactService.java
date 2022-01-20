@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 import static com.example.ContactManager.Service.ContactServiceUtils.*;
@@ -21,13 +21,14 @@ import static com.example.ContactManager.utils.ContactConverter.*;
 public class ContactService {
     private static final int DEFAULT_PAGE_SIZE = 10;
     private static final Logger log = LoggerFactory.getLogger(ContactController.class);
+
     private final ContactRepository contactRepository;
 
-    @PostConstruct
-    private void init() { initContacts(contactRepository); }
+//    @PostConstruct
+//    private void init() { initContacts(contactRepository); }
 
-//    @Autowired
-    private ContactService(ContactRepository contactRepository) {
+    @Autowired
+    public ContactService(ContactRepository contactRepository) {
         this.contactRepository = contactRepository;
     }
 
