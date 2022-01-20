@@ -30,9 +30,9 @@ public class ContactController {
     //Get first N contacts (GET) if param is present
     @GetMapping(value = "")
 //    @Validated({Marker.OnGet.class})
-    private List<ContactDto> getFirstNContacts(@RequestParam(required = false) Long limit) {
-        log.info("* Controller, GET, limit={}", limit);
-        return contactService.getFirstNContacts(limit);
+    private List<ContactDto> getFirstNContacts(@RequestParam(required = false) Long page, @RequestParam(required = false) Long pagesize) {
+        log.info("* Controller, GET, page={}, pagesize={}", page, pagesize);
+        return contactService.getFirstNContacts(page, pagesize);
     }
 
     //Add contact (POST)

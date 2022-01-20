@@ -15,15 +15,15 @@ import static com.example.ContactManager.utils.ContactConverter.convertDto2Conta
 public class ContactServiceUtils {
     public static Contact validateContact(Contact contact) {
         if (contact.getFirstName() == null || "".equals(contact.getFirstName()))
-            throw new InvalidContactDataException(contact, "'First name' can't be empty and must contain only letters");
+            throw new InvalidContactDataException(contact, "'First name' can't be empty and must contain only letters\n");
         if (contact.getLastName() == null || "".equals(contact.getLastName()))
-            throw new InvalidContactDataException(contact, "'Last name' can't be empty and must contain only letters");
+            throw new InvalidContactDataException(contact, "'Last name' can't be empty and must contain only letters\n");
         if (contact.getPhone() == null || "".equals(contact.getPhone()) || !contact.getPhone().chars().allMatch(Character::isDigit))
-            throw new InvalidContactDataException(contact, "'Phone' can't be empty and must contain only digits");
+            throw new InvalidContactDataException(contact, "'Phone' can't be empty and must contain only digits\n");
         if (contact.getEmail() == null || !isValidEmail(contact.getEmail()))
-            throw new InvalidContactDataException(contact, "'Email' is invalid, permissible email pattern is 'email@server.com'");
+            throw new InvalidContactDataException(contact, "'Email' is invalid, permissible email pattern is 'email@server.com'\n");
         if (contact.getCompany() == null || "".equals(contact.getCompany()))
-            throw new InvalidContactDataException(contact, "'Company' can't be empty");
+            throw new InvalidContactDataException(contact, "'Company' can't be empty\n");
         return contact;
     }
 

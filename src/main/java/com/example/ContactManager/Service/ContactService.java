@@ -31,15 +31,16 @@ public class ContactService {
         this.contactRepository = contactRepository;
     }
 
-    public List<ContactDto> getFirstNContacts(Long limit) {
+    public List<ContactDto> getFirstNContacts(Long page, Long pagesize) {
         int pageSize;
-        if (limit == null || limit < 1 || limit > DEFAULT_PAGE_SIZE) {
+        if (page == null || page < 0) page = 0L;
+        if (pagesize == null || pagesize < 1 || pagesize > DEFAULT_PAGE_SIZE) {
             pageSize = DEFAULT_PAGE_SIZE;
         } else {
-            pageSize = limit.intValue();
+            pageSize = pagesize.intValue();
         }
-        log.info("* Service, getFirstNContacts, pageSize={}", pageSize);
-        List<Contact> contactList = contactRepository.findAll(PageRequest.of(0, pageSize)).getContent();
+        log.info("* Service, getFirstNContacts, page={}, pageSize={}", page, pageSize);
+        List<Contact> contactList = contactRepository.findAll(PageRequest.of(page.intValue(), pageSize)).getContent();
         log.info("* Service, getFirstNContacts, contactList=\n{}", contactList);
         return convertContactList2Dto(contactList);
     }
