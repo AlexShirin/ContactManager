@@ -1,9 +1,12 @@
 package com.example.ContactManager.Service;
 
+import com.example.ContactManager.Controller.ContactController;
 import com.example.ContactManager.Exception.InvalidContactDataException;
 import com.example.ContactManager.Model.Contact;
 import com.example.ContactManager.Model.ContactDto;
 import com.example.ContactManager.Repository.ContactRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -13,6 +16,8 @@ import static com.example.ContactManager.utils.ContactConverter.convertContactLi
 import static com.example.ContactManager.utils.ContactConverter.convertDto2Contact;
 
 public class ContactServiceUtils {
+    private static final Logger log = LoggerFactory.getLogger(ContactController.class);
+
     public static Contact validateContact(Contact contact) {
         if (contact.getFirstName() == null || "".equals(contact.getFirstName()))
             throw new InvalidContactDataException(contact, "'First name' can't be empty and must contain only letters\n");
@@ -58,7 +63,8 @@ public class ContactServiceUtils {
     public static List<Contact> findContactsByPattern(ContactRepository repository, ContactDto contactDtoPattern) {
         Contact contact = convertDto2Contact(contactDtoPattern);
         Contact fixedContact = fixContact(contact);
-        return repository.findAllByFirstNameOrLastNameOrPhoneOrEmailOrCompany(
+        log.info("* Service utils, findContactsByPattern, fixedContact={}", fixedContact);
+        return repository.fullTextSearch(
                 fixedContact.getFirstName(),
                 fixedContact.getLastName(),
                 fixedContact.getPhone(),
