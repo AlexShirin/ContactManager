@@ -12,15 +12,15 @@ import javax.validation.constraints.Positive;
 //@Validated
 public class ContactDto {
 
-//    @NotBlank(groups = Marker.OnAddUpdate.class)
+    @NotBlank(groups = Marker.OnAddUpdate.class)
     private String firstName;
-//    @NotBlank(groups = Marker.OnAddUpdate.class)
+    @NotBlank(groups = Marker.OnAddUpdate.class)
     private String lastName;
-//    @Positive(groups = Marker.OnAddUpdate.class)
+    @Positive(groups = Marker.OnAddUpdate.class)
     private String phone;
-//    @Email(groups = Marker.OnAddUpdate.class)
+    @Email(groups = Marker.OnAddUpdate.class)
     private String email;
-//    @NotBlank(groups = Marker.OnAddUpdate.class)
+    @NotBlank(groups = Marker.OnAddUpdate.class)
     private String company;
 
     public ContactDto() {}
