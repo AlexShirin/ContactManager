@@ -10,9 +10,11 @@ import java.util.List;
 
 public interface ContactRepository extends JpaRepository<Contact, Long> {
 
-    @Query(value = "SELECT * FROM contact c WHERE " +
-            "to_tsvector(c.first_name) || to_tsvector(c.last_name) || to_tsvector(c.phone) || to_tsvector(c.email) || to_tsvector(c.company) " +
-            "@@ (plainto_tsquery(?1) || plainto_tsquery(?2) || plainto_tsquery(?3) || plainto_tsquery(?4) || plainto_tsquery(?5))",
+    @Query(value = "SELECT * FROM contact c WHERE to_tsvector(c.first_name) @@ plainto_tsquery(?1) " +
+            "UNION SELECT * FROM contact c WHERE to_tsvector(c.last_name) @@ plainto_tsquery(?2) " +
+            "UNION SELECT * FROM contact c WHERE to_tsvector(c.phone) @@ plainto_tsquery(?3) " +
+            "UNION SELECT * FROM contact c WHERE to_tsvector(c.email) @@ plainto_tsquery(?4) " +
+            "UNION SELECT * FROM contact c WHERE to_tsvector(c.company) @@ plainto_tsquery(?5)",
             nativeQuery = true)
     List<Contact> fullTextSearch(String firstName, String lastName, String phone, String email, String company);
 
