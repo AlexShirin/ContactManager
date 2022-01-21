@@ -1,11 +1,13 @@
 package com.example.ContactManager.Service;
 
 import com.example.ContactManager.Model.Contact;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static com.example.ContactManager.Service.ContactServiceUtils.*;
 import static org.junit.Assert.*;
 
+@Ignore
 public class ContactServiceUtilsTest {
 
     @Test

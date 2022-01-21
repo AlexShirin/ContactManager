@@ -2,6 +2,7 @@ package com.example.ContactManager;
 
 import com.example.ContactManager.Model.Contact;
 import com.example.ContactManager.Repository.ContactRepository;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 
+@Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ContactManagerApplicationTests {
