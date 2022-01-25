@@ -5,6 +5,7 @@ import com.example.ContactManager.Exception.ContactNotFoundException;
 import com.example.ContactManager.Model.Contact;
 import com.example.ContactManager.Model.ContactDto;
 import com.example.ContactManager.Repository.ContactRepository;
+import com.example.ContactManager.utils.ContactMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 
 import static com.example.ContactManager.Service.ContactServiceUtils.*;
-import static com.example.ContactManager.utils.ContactConverter.*;
 
 @Transactional
 @Service
@@ -45,11 +45,11 @@ public class ContactService {
         log.info("* Service, getFirstNContacts, page={}, pageSize={}", page, pageSize);
         List<Contact> contactList = contactRepository.findAll(PageRequest.of(page.intValue(), pageSize)).getContent();
         log.info("* Service, getFirstNContacts, contactList=\n{}", contactList);
-        return convertContactList2Dto(contactList);
+        return ContactMapper.mapper.convertContactList2Dto(contactList);
     }
 
     public ContactDto saveContact(ContactDto contactDto) {
-        Contact contact = convertDto2Contact(contactDto);
+        Contact contact = ContactMapper.mapper.convertDto2Contact(contactDto);
         log.info("* Service, saveContact, contact={}", contact);
         validateContact(contact);
         List<Contact> one = contactRepository.findAllByEmail(
@@ -62,11 +62,11 @@ public class ContactService {
                             contact.toString() + "At least email must be unique");
         contactRepository.save(contact);
         log.info("* Service, saveContact, save(contact)={}", contact);
-        return convertContact2Dto(contact);
+        return ContactMapper.mapper.convertContact2Dto(contact);
     }
 
     public ContactDto updateContact(ContactDto contactDto) {
-        Contact contact = convertDto2Contact(contactDto);
+        Contact contact = ContactMapper.mapper.convertDto2Contact(contactDto);
         log.info("* Service, updateContact, contact={}", contact);
         validateContact(contact);
         List<Contact> one = contactRepository.findAllByEmail(
@@ -82,18 +82,18 @@ public class ContactService {
         contactRepository.delete(one.get(0));
         contactRepository.save(contact);
         log.info("* Service, updateContact, save(contact)={}", contact);
-        return convertContact2Dto(contact);
+        return ContactMapper.mapper.convertContact2Dto(contact);
     }
 
     public List<ContactDto> findMatchingContacts(ContactDto contactDtoPattern) {
         log.info("* Service, findMatchingContacts, contactDtoPattern={}", contactDtoPattern);
         List<Contact> contactsByPattern = findContactsByPattern(contactRepository, contactDtoPattern);
         log.info("* Service, findContactsByPattern, contactsByPattern=\n{}", contactsByPattern);
-        return convertContactList2Dto(contactsByPattern);
+        return ContactMapper.mapper.convertContactList2Dto(contactsByPattern);
     }
 
     public List<ContactDto> deleteMatchingContacts(ContactDto contactDtoPattern) {
-        Contact contact = convertDto2Contact(contactDtoPattern);
+        Contact contact = ContactMapper.mapper.convertDto2Contact(contactDtoPattern);
         log.info("* Service, deleteMatchingContacts, contact={}", contact);
         List<Contact> contactList = findContactsByPattern(contactRepository, contactDtoPattern);
         if (contactList.isEmpty())
@@ -102,7 +102,7 @@ public class ContactService {
         for (Contact c : contactList)
             contactRepository.deleteById(c.getId());
         log.info("* Service, deleteMatchingContacts, deleted=\n{}", contactList);
-        return convertContactList2Dto(contactList);
+        return ContactMapper.mapper.convertContactList2Dto(contactList);
     }
 }
 
