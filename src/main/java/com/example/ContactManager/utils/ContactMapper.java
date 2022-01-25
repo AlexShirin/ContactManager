@@ -1,7 +1,6 @@
 package com.example.ContactManager.utils;
 
-import com.example.ContactManager.Model.Contact;
-import com.example.ContactManager.Model.ContactDto;
+import com.example.ContactManager.Model.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -11,9 +10,9 @@ import java.util.List;
 public interface ContactMapper {
     ContactMapper mapper = Mappers.getMapper( ContactMapper.class );
 
-    ContactDto convertContact2Dto(Contact contact);
+    Contact convertAddRequestDtoToContact(AddRequestContactDto addRequestContactDto);
+    Contact convertFindRequestDtoToContact(FindRequestContactDto findRequestContactDto);
 
-    Contact convertDto2Contact(ContactDto contactDto);
-
-    List<ContactDto> convertContactList2Dto(List<Contact> contactList);
+    ResponseContactDto convertContactToResponseDto(Contact contact);
+    List<ResponseContactDto> convertContactListToResponseDto(List<Contact> contactList);
 }

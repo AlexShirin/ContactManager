@@ -1,38 +1,35 @@
 package com.example.ContactManager.Model;
 
-import lombok.Data;
-
-import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 
-@Data
-@Entity
-@Table(name = "contact")
-public class Contact {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+public class AddRequestContactDto {
+    @Positive(message = "id should be valid")
     private Long id;
-
-    @Column(name = "first_name")
+    @NotBlank(message = "firstName should be valid")
     private String firstName;
-
-    @Column(name = "last_name")
+    @NotBlank(message = "lastName should be valid")
     private String lastName;
-
-    @Column(name = "phone")
+    @Positive(message = "phone should be valid")
     private String phone;
-
-    @Column(name = "email")
+    @Email(message = "email should be valid")
     private String email;
-
-    @Column(name = "company")
+    @NotBlank(message = "company should be valid")
     private String company;
 
-    public Contact() {}
+    public AddRequestContactDto() {
+    }
 
-    public Contact(String firstName, String lastName, String phone, String email, String company) {
-        this.id = 0L;
+    public AddRequestContactDto(
+            @Positive Long id,
+            @NotBlank String firstName,
+            @NotBlank String lastName,
+            @Positive String phone,
+            @Email String email,
+            @NotBlank String company
+    ) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -42,14 +39,14 @@ public class Contact {
 
     @Override
     public String toString() {
-        return "Contact{" +
+        return "AddRequestContactDto{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", company='" + company + '\'' +
-                "}\n";
+                '}';
     }
 
     public Long getId() {
@@ -60,7 +57,9 @@ public class Contact {
         this.id = id;
     }
 
-    public String getFirstName() { return firstName; }
+    public String getFirstName() {
+        return firstName;
+    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;

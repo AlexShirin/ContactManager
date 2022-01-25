@@ -1,55 +1,50 @@
 package com.example.ContactManager.Model;
 
-import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 
-import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 
-@Data
-@Entity
-@Table(name = "contact")
-public class Contact {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+public class FindRequestContactDto {
+
+    @Positive(message = "id should be valid")
+    @Value("0")
     private Long id;
 
-    @Column(name = "first_name")
+    @NotBlank(message = "firstName should be valid")
+    @Value("")
     private String firstName;
 
-    @Column(name = "last_name")
+    @NotBlank(message = "lastName should be valid")
+    @Value("")
     private String lastName;
 
-    @Column(name = "phone")
+    @Positive(message = "phone should be valid")
+    @Value("")
     private String phone;
 
-    @Column(name = "email")
+    @Email(message = "email should be valid")
+    @Value("")
     private String email;
 
-    @Column(name = "company")
+    @NotBlank(message = "company should be valid")
+    @Value("")
     private String company;
 
-    public Contact() {}
-
-    public Contact(String firstName, String lastName, String phone, String email, String company) {
-        this.id = 0L;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.email = email;
-        this.company = company;
+    public FindRequestContactDto() {
     }
 
     @Override
     public String toString() {
-        return "Contact{" +
+        return "FindRequestContactDto{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", company='" + company + '\'' +
-                "}\n";
+                '}';
     }
 
     public Long getId() {
@@ -60,7 +55,9 @@ public class Contact {
         this.id = id;
     }
 
-    public String getFirstName() { return firstName; }
+    public String getFirstName() {
+        return firstName;
+    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;

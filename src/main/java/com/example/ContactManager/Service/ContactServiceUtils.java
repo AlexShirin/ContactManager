@@ -3,13 +3,10 @@ package com.example.ContactManager.Service;
 import com.example.ContactManager.Controller.ContactController;
 import com.example.ContactManager.Exception.InvalidContactDataException;
 import com.example.ContactManager.Model.Contact;
-import com.example.ContactManager.Model.ContactDto;
 import com.example.ContactManager.Repository.ContactRepository;
-import com.example.ContactManager.utils.ContactMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,19 +53,6 @@ public class ContactServiceUtils {
         Contact validContact = new Contact(firstName, lastName, phone, email, company);
         validContact.setId(id);
         return validContact;
-    }
-
-    public static List<Contact> findContactsByPattern(ContactRepository repository, ContactDto contactDtoPattern) {
-        Contact contact = ContactMapper.mapper.convertDto2Contact(contactDtoPattern);
-        Contact fixedContact = fixContact(contact);
-        log.info("* Service utils, findContactsByPattern, fixedContact={}", fixedContact);
-        return repository.fullTextSearch(
-                fixedContact.getFirstName(),
-                fixedContact.getLastName(),
-                fixedContact.getPhone(),
-                fixedContact.getEmail(),
-                fixedContact.getCompany()
-        );
     }
 
     public static void initContacts(ContactRepository repository) {
