@@ -1,21 +1,22 @@
 package com.example.ContactManager.Model;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 
 public class AddRequestContactDto {
-    @Positive(message = "id should be valid")
+    @Min(value = 0, message = "id should be >= 0")
     private Long id;
-    @NotBlank(message = "firstName should be valid")
+    @NotBlank(message = "firstName should not be blank")
     private String firstName;
-    @NotBlank(message = "lastName should be valid")
+    @NotBlank(message = "lastName should not be blank")
     private String lastName;
-    @Positive(message = "phone should be valid")
+    @Min(value = 1, message = "phone should be positive number")
     private String phone;
     @Email(message = "email should be valid")
     private String email;
-    @NotBlank(message = "company should be valid")
+    @NotBlank(message = "company should not be blank")
     private String company;
 
     public AddRequestContactDto() {

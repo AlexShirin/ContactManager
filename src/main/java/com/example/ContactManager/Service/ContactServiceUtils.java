@@ -11,7 +11,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ContactServiceUtils {
+    public static final int DEFAULT_PAGE_SIZE = 10;
+
     private static final Logger log = LoggerFactory.getLogger(ContactController.class);
+
 
     public static Contact validateContact(Contact contact) {
         if (contact.getFirstName() == null || "".equals(contact.getFirstName()))
@@ -53,36 +56,5 @@ public class ContactServiceUtils {
         Contact validContact = new Contact(firstName, lastName, phone, email, company);
         validContact.setId(id);
         return validContact;
-    }
-
-    public static void initContacts(ContactRepository repository) {
-        repository.save(new Contact(
-                "John",
-                "Dow",
-                "1111",
-                "email@mail.com",
-                "aaa")
-        );
-        repository.save(new Contact(
-                "James",
-                "Dow",
-                "2222",
-                "email2@mail.com",
-                "bbb")
-        );
-        repository.save(new Contact(
-                "John",
-                "Smith",
-                "3333",
-                "email3@mail.com",
-                "ccc")
-        );
-        repository.save(new Contact(
-                "James",
-                "Smith",
-                "4444",
-                "email4@mail.com",
-                "ddd")
-        );
     }
 }

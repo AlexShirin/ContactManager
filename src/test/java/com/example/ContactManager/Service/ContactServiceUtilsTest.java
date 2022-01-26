@@ -12,25 +12,9 @@ public class ContactServiceUtilsTest {
 
     @Test
     public void validateContactTest() {
-        Contact contact1 = new Contact("a", "a", "1", "a@a.a", "a");
-        Contact contact2 = validateContact(contact1);
-        assertEquals(contact1, contact2);
-    }
-
-    @Test
-    public void isValidEmailTest() {
-        assertTrue(isValidEmail("aa@aa.aa"));
-
-        assertFalse(isValidEmail("aa.aa"));
-        assertFalse(isValidEmail("aa@aa"));
-        assertFalse(isValidEmail("aa"));
-
-        assertFalse(isValidEmail(".aa@aa.aa"));
-        assertFalse(isValidEmail("a..a@aa.aa"));
-        assertFalse(isValidEmail("aa.@aa.aa"));
-        assertFalse(isValidEmail("aa@aa..aa"));
-        assertFalse(isValidEmail(".aa@.aa.aa"));
-        assertFalse(isValidEmail(".aa@aa.aa."));
+//        Contact contact1 = new Contact("a", "a", "1", "a@a.a", "a");
+//        Contact contact2 = validateContact(contact1);
+//        assertEquals(contact1, contact2);
     }
 
     @Test

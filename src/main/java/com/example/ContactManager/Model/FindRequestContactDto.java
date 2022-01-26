@@ -1,35 +1,21 @@
 package com.example.ContactManager.Model;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
 
 public class FindRequestContactDto {
-
-    @Positive(message = "id should be valid")
-    @Value("0")
+    @Min(value = 0, message = "id should be >= 0")
     private Long id;
-
-    @NotBlank(message = "firstName should be valid")
-    @Value("")
+    @NotBlank(message = "firstName should not be blank")
     private String firstName;
-
-    @NotBlank(message = "lastName should be valid")
-    @Value("")
+    @NotBlank(message = "lastName should not be blank")
     private String lastName;
-
-    @Positive(message = "phone should be valid")
-    @Value("")
+    @Min(value = 1, message = "phone should be positive number")
     private String phone;
-
     @Email(message = "email should be valid")
-    @Value("")
     private String email;
-
-    @NotBlank(message = "company should be valid")
-    @Value("")
+    @NotBlank(message = "company should not be blank")
     private String company;
 
     public FindRequestContactDto() {
@@ -52,7 +38,11 @@ public class FindRequestContactDto {
     }
 
     public void setId(Long id) {
-        this.id = id;
+        if (id != null) {
+            this.id = id;
+        } else {
+            this.id = 0L;
+        }
     }
 
     public String getFirstName() {
@@ -60,7 +50,11 @@ public class FindRequestContactDto {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        if (firstName != null) {
+            this.firstName = firstName;
+        } else {
+            this.firstName = "";
+        }
     }
 
     public String getLastName() {
@@ -68,7 +62,11 @@ public class FindRequestContactDto {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        if (lastName != null) {
+            this.lastName = lastName;
+        } else {
+            this.lastName = "";
+        }
     }
 
     public String getPhone() {
@@ -76,7 +74,11 @@ public class FindRequestContactDto {
     }
 
     public void setPhone(String phone) {
-        this.phone = phone;
+        if (phone != null) {
+            this.phone = phone;
+        } else {
+            this.phone = "";
+        }
     }
 
     public String getEmail() {
@@ -84,7 +86,11 @@ public class FindRequestContactDto {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        if (email != null) {
+            this.email = email;
+        } else {
+            this.email = "";
+        }
     }
 
     public String getCompany() {
@@ -92,6 +98,10 @@ public class FindRequestContactDto {
     }
 
     public void setCompany(String company) {
-        this.company = company;
+        if (company != null) {
+            this.company = company;
+        } else {
+            this.company = "";
+        }
     }
 }

@@ -10,9 +10,9 @@ import java.util.List;
 public interface ContactMapper {
     ContactMapper mapper = Mappers.getMapper( ContactMapper.class );
 
-    Contact convertAddRequestDtoToContact(AddRequestContactDto addRequestContactDto);
-    Contact convertFindRequestDtoToContact(FindRequestContactDto findRequestContactDto);
+    Contact mapAddRequestDtoToContact(AddRequestContactDto addRequestContactDto);
+    Contact mapFindRequestDtoToContact(FindRequestContactDto findRequestContactDto);
 
-    ResponseContactDto convertContactToResponseDto(Contact contact);
-    List<ResponseContactDto> convertContactListToResponseDto(List<Contact> contactList);
+    ResponseContactDto mapContactToResponseDto(Contact contact);
+    List<ResponseContactDto> mapContactListToResponseDto(List<Contact> contactList);
 }
