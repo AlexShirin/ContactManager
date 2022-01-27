@@ -3,7 +3,6 @@ package com.example.ContactManager.Model;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 
 @Data
 @Entity

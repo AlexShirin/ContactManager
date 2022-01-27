@@ -1,9 +1,9 @@
 package com.example.ContactManager.Model;
 
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
 
 public class AddRequestContactDto {
     @Min(value = 0, message = "id should be >= 0")
@@ -23,10 +23,10 @@ public class AddRequestContactDto {
     }
 
     public AddRequestContactDto(
-            @Positive Long id,
+            @Min(0) Long id,
             @NotBlank String firstName,
             @NotBlank String lastName,
-            @Positive String phone,
+            @Min(1) String phone,
             @Email String email,
             @NotBlank String company
     ) {

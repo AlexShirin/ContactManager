@@ -54,7 +54,7 @@ public class ContactService {
     public ResponseContactDto updateContactById(AddRequestContactDto dto) {
         Contact contact = ContactMapper.mapper.mapAddRequestDtoToContact(dto);
         log.info("* Service, updateContactById, contact={}", contact);
-        validateContact(contact);
+//        validateContact(contact);
         Optional<Contact> one = contactRepository.findById(contact.getId());
         log.info("* Service, updateContactById, Optional<Contact> one=\n{}", one);
         if (!one.isPresent())

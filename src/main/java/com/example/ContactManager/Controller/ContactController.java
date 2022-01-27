@@ -34,8 +34,7 @@ public class ContactController {
             @RequestParam(required = false, defaultValue = "10") Integer pageSize,
             @RequestBody(required = false) FindRequestContactDto dto
     ) {
-        log.info("* Controller, GET, page={}, pageSize={}", page, pageSize);
-        log.info("* Controller, GET, FindRequestContactDto={}", dto);
+        log.info("* Controller, GET, page={}, pageSize={}, FindRequestContactDto={}", page, pageSize, dto);
         return contactService.findMatchingContacts(page, pageSize, dto);
     }
 
