@@ -1,30 +1,38 @@
 package com.example.ContactManager.Model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import javax.persistence.*;
 
-@Data
+@Schema(name="Contact", description="Sample model for the documentation")
+//@Data
 @Entity
 @Table(name = "contact")
 public class Contact {
+    @Schema(type = "Long", format = "int64", description = "contact id in DB (unique)", example = "1")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
+    @Schema(type = "String", description = "First name", example = "John")
     @Column(name = "first_name")
     private String firstName;
 
+    @Schema(type = "String", description = "Last name", example = "Smith")
     @Column(name = "last_name")
     private String lastName;
 
+    @Schema(type = "String", description = "Phone number", example = "1234567")
     @Column(name = "phone")
     private String phone;
 
+    @Schema(type = "String", description = "Email", example = "email@server.com")
     @Column(name = "email")
     private String email;
 
+    @Schema(type = "String", description = "Company name", example = "Google")
     @Column(name = "company")
     private String company;
 

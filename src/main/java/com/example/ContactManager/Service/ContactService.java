@@ -25,9 +25,8 @@ public class ContactService {
 
     private final ContactRepository contactRepository;
 
-    int page = 0;
-    int pageSize = DEFAULT_PAGE_SIZE;
-
+    private int page = 0;
+    private int pageSize = DEFAULT_PAGE_SIZE;
 
     @Autowired
     public ContactService(ContactRepository contactRepository) {
