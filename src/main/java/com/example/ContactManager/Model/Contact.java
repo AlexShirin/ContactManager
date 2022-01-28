@@ -38,8 +38,8 @@ public class Contact {
 
     public Contact() {}
 
-    public Contact(String firstName, String lastName, String phone, String email, String company) {
-        this.id = 0L;
+    public Contact(Long id, String firstName, String lastName, String phone, String email, String company) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -103,5 +103,31 @@ public class Contact {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Contact contact = (Contact) o;
+
+        if (id != null ? !id.equals(contact.id) : contact.id != null) return false;
+        if (firstName != null ? !firstName.equals(contact.firstName) : contact.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(contact.lastName) : contact.lastName != null) return false;
+        if (phone != null ? !phone.equals(contact.phone) : contact.phone != null) return false;
+        if (email != null ? !email.equals(contact.email) : contact.email != null) return false;
+        return company != null ? company.equals(contact.company) : contact.company == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (company != null ? company.hashCode() : 0);
+        return result;
     }
 }
