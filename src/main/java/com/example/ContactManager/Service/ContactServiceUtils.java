@@ -11,8 +11,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ContactServiceUtils {
-    public static final int DEFAULT_PAGE_SIZE = 10;
-
     private static final Logger log = LoggerFactory.getLogger(ContactController.class);
 
 

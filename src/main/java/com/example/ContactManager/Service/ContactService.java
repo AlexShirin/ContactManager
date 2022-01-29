@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.example.ContactManager.Service.ContactServiceUtils.*;
+import static com.example.ContactManager.utils.Constants.DEFAULT_PAGE_SIZE;
 
 @Transactional
 @Service

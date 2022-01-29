@@ -15,27 +15,27 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
-@Tag(name = "ContactManager", description = "The Contact API")
+import static com.example.ContactManager.utils.Constants.DEFAULT_PAGE_SIZE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
+@Tag(name = "ContactManager", description = "The ContactManager API")
 @RestController
-@RequestMapping(value = "/contact", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/contact", produces = APPLICATION_JSON_VALUE)
 public class ContactController {
     private static final Logger log = LoggerFactory.getLogger(ContactController.class);
 
     private final ContactService contactService;
 
     @Autowired
-    public ContactController(ContactService contactService) {
-        this.contactService = contactService;
-    }
+    public ContactController(ContactService contactService) { this.contactService = contactService; }
 
     @Operation(summary = "Get contacts", tags = "contact",
-            description = "Return number of any or matching pattern contacts",
+            description = "Return specified number of contacts",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Contact / list of contacts",
                             content = {@Content(mediaType = "application/json",
@@ -52,14 +52,28 @@ public class ContactController {
 
             @Parameter(name = "pageSize", description = "Page size (size >= 1 && size <= 10)",
                         schema = @Schema(type = "int", format = "int32", defaultValue = "10"))
-            @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-
-            @Parameter(name = "Contact", description = "Contact data pattern to find in DB",
-                        schema = @Schema(nullable = true, implementation = Contact.class))
-            @RequestBody(required = false) FindRequestContactDto dto
+            @RequestParam(required = false, defaultValue = "10") Integer pageSize
     ) {
-        log.info("* Controller, GET, page={}, pageSize={}, FindRequestContactDto={}", page, pageSize, dto);
-        return contactService.findMatchingContacts(page, pageSize, dto);
+        log.info("* Controller, GET, getContacts, page={}, pageSize={}", page, pageSize);
+        return contactService.findMatchingContacts(page, pageSize, null);
+    }
+
+    @Operation(summary = "Find contact", tags = "contact",
+            description = "Find contact(s) matching pattern DB",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Added contact",
+                            content = @Content(schema = @Schema(implementation = Contact.class))),
+                    @ApiResponse(responseCode = "400", description = "Invalid input contact data",
+                            content = @Content(schema = @Schema(implementation = Contact.class)))
+            })
+    @PostMapping(value = "/find")
+    private List<ResponseContactDto> findContacts(
+            @Parameter(name = "Contact", description = "Contact data pattern to find in DB",
+                    schema = @Schema(implementation = Contact.class))
+            @RequestBody FindRequestContactDto dto
+    ) {
+        log.info("* Controller, findContacts, POST, FindRequestContactDto={}", dto);
+        return contactService.findMatchingContacts(0, DEFAULT_PAGE_SIZE, dto);
     }
 
     @Operation(summary = "Add contact", tags = "contact",
@@ -74,8 +88,8 @@ public class ContactController {
     private ResponseContactDto addContact(
             @Parameter(name = "Contact", description = "Contact data pattern to add",
                     schema = @Schema(implementation = Contact.class))
-            @Valid @RequestBody AddRequestContactDto dto) {
-        log.info("* Controller, addContact, POST, contactDto={}", dto);
+            /*@Valid*/ @Validated @RequestBody AddRequestContactDto dto) {
+        log.info("* Controller, addContact, POST, AddRequestContactDto={}", dto);
         return contactService.saveContact(dto);
     }
 
@@ -91,8 +105,8 @@ public class ContactController {
     private ResponseContactDto updateContactById(
             @Parameter(name = "Contact", description = "Contact data to update",
                     schema = @Schema(implementation = Contact.class))
-            @Valid @RequestBody AddRequestContactDto dto) {
-        log.info("* Controller, updateContactById, PUT, contactDto={}", dto);
+            /*@Valid*/ @Validated @RequestBody AddRequestContactDto dto) {
+        log.info("* Controller, updateContactById, PUT, AddRequestContactDto={}", dto);
         return contactService.updateContactById(dto);
     }
 
@@ -111,7 +125,7 @@ public class ContactController {
             @Parameter(name = "Contact", description = "Contact data pattern",
                     schema = @Schema(implementation = Contact.class))
             @RequestBody FindRequestContactDto dto) {
-        log.info("* Controller, deleteMatchingContacts, DELETE, contactDto={}", dto);
+        log.info("* Controller, deleteMatchingContacts, DELETE, FindRequestContactDto={}", dto);
         return contactService.deleteMatchingContacts(dto);
     }
 }
