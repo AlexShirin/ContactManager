@@ -37,7 +37,7 @@ public class ContactService {
     public ResponseContactDto saveContact(AddRequestContactDto dto) {
         Contact contact = ContactMapper.mapper.mapAddRequestDtoToContact(dto);
         log.info("* Service, saveContact, contact={}", contact);
-        validateContact(contact);
+//        validateContact(contact);
         List<Contact> one = contactRepository.findAllByEmail(
                 contact.getEmail(),
                 PageRequest.of(0, DEFAULT_PAGE_SIZE));

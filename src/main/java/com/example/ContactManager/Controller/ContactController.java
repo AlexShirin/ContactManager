@@ -15,9 +15,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.example.ContactManager.utils.Constants.DEFAULT_PAGE_SIZE;
@@ -88,7 +88,7 @@ public class ContactController {
     private ResponseContactDto addContact(
             @Parameter(name = "Contact", description = "Contact data pattern to add",
                     schema = @Schema(implementation = Contact.class))
-            /*@Valid*/ @Validated @RequestBody AddRequestContactDto dto) {
+            /*@Valid*/ @Valid @RequestBody AddRequestContactDto dto) {
         log.info("* Controller, addContact, POST, AddRequestContactDto={}", dto);
         return contactService.saveContact(dto);
     }
@@ -105,7 +105,7 @@ public class ContactController {
     private ResponseContactDto updateContactById(
             @Parameter(name = "Contact", description = "Contact data to update",
                     schema = @Schema(implementation = Contact.class))
-            /*@Valid*/ @Validated @RequestBody AddRequestContactDto dto) {
+            /*@Valid*/ @Valid @RequestBody AddRequestContactDto dto) {
         log.info("* Controller, updateContactById, PUT, AddRequestContactDto={}", dto);
         return contactService.updateContactById(dto);
     }

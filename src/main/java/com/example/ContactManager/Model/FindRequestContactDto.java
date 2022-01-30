@@ -3,16 +3,20 @@ package com.example.ContactManager.Model;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class FindRequestContactDto {
+    @NotNull(message = "id should be >= 0")
     @Min(value = 0, message = "id should be >= 0")
     private Long id;
     @NotBlank(message = "firstName should not be blank")
     private String firstName;
     @NotBlank(message = "lastName should not be blank")
     private String lastName;
+    @NotBlank(message = "phone should be positive number")
     @Min(value = 1, message = "phone should be positive number")
     private String phone;
+    @NotBlank(message = "email should be valid")
     @Email(message = "email should be valid")
     private String email;
     @NotBlank(message = "company should not be blank")
