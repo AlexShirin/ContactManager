@@ -60,18 +60,11 @@ public class ContactManagerIntegrationTests {
 
     @Test
     void GetAllContactsWithParamTest() {
-//        String uri = UriComponentsBuilder
-//                .fromUriString("/contact")
-//                .queryParam("page", "0")
-//                .queryParam("pagesize", "3")
-//                .build().toUriString();
-//        log.info("* testGetAllContacts, webTestClient={}\n", webTestClient);
-
         EntityExchangeResult<List<Contact>> response = webTestClient
                 .get()
                 .uri(uriBuilder -> uriBuilder.path("/contact")
                         .queryParam("page", "0")
-                        .queryParam("pagesize", "3")
+                        .queryParam("pageSize", "3")
                         .build()) // the base URL is already configured for us   "/contact?page=0&pagesize=3"
                 .accept(APPLICATION_JSON, APPLICATION_JSON_UTF8)
                 .exchange()
