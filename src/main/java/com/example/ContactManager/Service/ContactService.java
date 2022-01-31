@@ -36,8 +36,7 @@ public class ContactService {
 
     public ResponseContactDto saveContact(AddRequestContactDto dto) {
         Contact contact = ContactMapper.mapper.mapAddRequestDtoToContact(dto);
-        log.info("* Service, saveContact, contact={}", contact);
-//        validateContact(contact);
+        log.info("* Service, saveContact, contact=\n{}", contact);
         List<Contact> one = contactRepository.findAllByEmail(
                 contact.getEmail(),
                 PageRequest.of(0, DEFAULT_PAGE_SIZE));
@@ -46,28 +45,24 @@ public class ContactService {
             throw new ContactNotFoundException(
                     "Cannot add contact: another contact found with given pattern\n" +
                             contact.toString() + "At least email must be unique");
+        // if id>0 then save will overwrite contact with given id instead of add new contact
+        contact.setId(null);
         contactRepository.save(contact);
-        log.info("* Service, saveContact, save(contact)={}", contact);
+        log.info("* Service, saveContact, save(contact)=\n{}", contact);
         return ContactMapper.mapper.mapContactToResponseDto(contact);
     }
 
     public ResponseContactDto updateContactById(AddRequestContactDto dto) {
         Contact contact = ContactMapper.mapper.mapAddRequestDtoToContact(dto);
-        log.info("* Service, updateContactById, contact={}", contact);
-//        validateContact(contact);
+        log.info("* Service, updateContactById, contact=\n{}", contact);
         Optional<Contact> one = contactRepository.findById(contact.getId());
         log.info("* Service, updateContactById, Optional<Contact> one=\n{}", one);
         if (!one.isPresent())
             throw new ContactNotFoundException(
                     "Cannot updateById contact: no contact found with given id\n" + contact.toString());
         contact.setId(one.get().getId());
-        Contact update = contactRepository.updateById(contact.getId(),
-                contact.getFirstName(),
-                contact.getLastName(),
-                contact.getPhone(),
-                contact.getEmail(),
-                contact.getCompany());
-        log.info("* Service, updateContactById, save(contact)={}", contact);
+        Contact update = contactRepository.save(contact);
+        log.info("* Service, updateContactById, save(contact)=\n{}", contact);
         return ContactMapper.mapper.mapContactToResponseDto(update);
     }
 
@@ -82,7 +77,7 @@ public class ContactService {
             log.info("* Service, getContacts, contactList=\n{}", list);
             return ContactMapper.mapper.mapContactListToResponseDto(list);
         } else {
-            log.info("* Service, findMatchingContacts, dto={}", dto);
+            log.info("* Service, findMatchingContacts, dto=\n{}", dto);
             List<Contact> contactsByPattern = findContactsByPattern(dto);
             log.info("* Service, findContactsByPattern, contactsByPattern=\n{}", contactsByPattern);
             return ContactMapper.mapper.mapContactListToResponseDto(contactsByPattern);
@@ -91,7 +86,7 @@ public class ContactService {
 
     public List<ResponseContactDto> deleteMatchingContacts(FindRequestContactDto dto) {
         Contact contact = ContactMapper.mapper.mapFindRequestDtoToContact(dto);
-        log.info("* Service, deleteMatchingContacts, contact={}", contact);
+        log.info("* Service, deleteMatchingContacts, contact=\n{}", contact);
         List<Contact> contactList = findContactsByPattern(dto);
         if (contactList.isEmpty())
             throw new ContactNotFoundException(
@@ -105,8 +100,8 @@ public class ContactService {
     public List<Contact> findContactsByPattern(FindRequestContactDto dto) {
         Contact contact = ContactMapper.mapper.mapFindRequestDtoToContact(dto);
         Contact fixedContact = fixContact(contact);
-        log.info("* Service utils, findContactsByPattern, fixedContact={}", fixedContact);
-        if (fixedContact.getId() > 0) {
+        log.info("* Service utils, findContactsByPattern, fixedContact=\n{}", fixedContact);
+        if (fixedContact.getId() > 0L) {
             Optional<Contact> found = contactRepository.findById(fixedContact.getId());
             return found.map(Collections::singletonList).orElse(null);
         } else

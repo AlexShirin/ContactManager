@@ -1,12 +1,10 @@
 package com.example.ContactManager.Model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
 import javax.persistence.*;
 
 @Schema(name="Contact", description="Sample model for the documentation")
-//@Data
 @Entity
 @Table(name = "contact")
 public class Contact {

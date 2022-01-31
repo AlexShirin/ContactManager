@@ -3,9 +3,10 @@ package com.example.ContactManager;
 import com.example.ContactManager.Controller.ContactController;
 import com.example.ContactManager.Model.Contact;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,19 +26,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 
 @AutoConfigureWebTestClient
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ContactManagerIntegrationTests {
     private static final Logger log = LoggerFactory.getLogger(ContactController.class);
 
     @Autowired
     WebTestClient webTestClient;
-    @Autowired
-    ObjectMapper objectMapper;
-
-    @BeforeEach
-    void setUp() {
-    }
 
     @Test
+    @Order(1)
     public void GetAllContactsTest() throws JsonProcessingException {
         EntityExchangeResult<List<Contact>> response = webTestClient
                 .get()
@@ -51,10 +48,11 @@ public class ContactManagerIntegrationTests {
         List<Contact> body = response.getResponseBody();
         log.info("* testGetAllContacts, List<Contact>=\n{}", body);
         assertThat(body).isNotNull();
-        assertThat(body.size()).isEqualTo(5);
+        assertThat(body.size()).isEqualTo(4);
     }
 
     @Test
+    @Order(2)
     void GetAllContactsWithParamTest() {
         EntityExchangeResult<List<Contact>> response = webTestClient
                 .get()
@@ -75,6 +73,7 @@ public class ContactManagerIntegrationTests {
     }
 
     @Test
+    @Order(3)
     void findAllContactsMatchingPatternTest() throws JsonProcessingException {
         Contact contact = new Contact(null, "john", null, null, null, null);
         EntityExchangeResult<List<Contact>> response = webTestClient
@@ -88,7 +87,7 @@ public class ContactManagerIntegrationTests {
                 .expectBodyList(Contact.class)
                 .returnResult();
         List<Contact> body = response.getResponseBody();
-        log.info("* findAllContactsMatchingPatternTest c1, List<Contact>=\n{}", body);
+        log.info("* findAllContactsMatchingPatternTest case1, List<Contact>=\n{}", body);
         assertThat(body).isNotNull();
         assertThat(body.size()).isEqualTo(2);
 
@@ -104,14 +103,15 @@ public class ContactManagerIntegrationTests {
                 .expectBodyList(Contact.class)
                 .returnResult();
         List<Contact> body2 = response2.getResponseBody();
-        log.info("* findAllContactsMatchingPatternTest c2, List<Contact>=\n{}", body2);
+        log.info("* findAllContactsMatchingPatternTest case2, List<Contact>=\n{}", body2);
         assertThat(body2).isNotNull();
         assertThat(body2.size()).isEqualTo(1);
     }
 
     @Test
+    @Order(4)
     void CreateUpdateDeleteNewContactTest() {
-        Contact contact = new Contact(null, "a", "b", "5", "aa@a.a", "c");
+        Contact contact = new Contact(5L, "a", "b", "5", "aa@a.a", "c");
 
         //add contact
         EntityExchangeResult<List<Contact>> response = webTestClient
@@ -147,7 +147,7 @@ public class ContactManagerIntegrationTests {
         log.info("* CreateUpdateDeleteNewContactTest update, Contact=\n{}", body2);
         assertThat(body2).isNotNull();
         assertThat(body2.size()).isEqualTo(1);
-        assertThat(body2.get(0).getFirstName()).isEqualTo("a");
+        assertThat(body2.get(0).getFirstName()).isEqualTo("aa");
 
         //delete contact
         EntityExchangeResult<List<Contact>> response3 = webTestClient
@@ -161,7 +161,7 @@ public class ContactManagerIntegrationTests {
                 .expectBodyList(Contact.class)
                 .returnResult();
         List<Contact> body3 = response3.getResponseBody();
-        log.info("* CreateUpdateDeleteNewContactTest update, Contact=\n{}", body3);
+        log.info("* CreateUpdateDeleteNewContactTest delete, Contact=\n{}", body3);
         assertThat(body3).isNotNull();
         assertThat(body3.size()).isEqualTo(1);
         assertThat(body3.get(0).getId()).isEqualTo(contact.getId());

@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 import static com.example.ContactManager.utils.Constants.DEFAULT_PAGE_SIZE;
@@ -59,7 +61,7 @@ public class ContactController {
     }
 
     @Operation(summary = "Find contact", tags = "contact",
-            description = "Find contact(s) matching pattern DB",
+            description = "Find contact(s) matching pattern in DB",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Added contact",
                             content = @Content(schema = @Schema(implementation = Contact.class))),
@@ -72,7 +74,7 @@ public class ContactController {
                     schema = @Schema(implementation = Contact.class))
             @RequestBody FindRequestContactDto dto
     ) {
-        log.info("* Controller, findContacts, POST, FindRequestContactDto={}", dto);
+        log.info("* Controller, findContacts, POST, FindRequestContactDto=\n{}", dto);
         return contactService.findMatchingContacts(0, DEFAULT_PAGE_SIZE, dto);
     }
 
@@ -88,8 +90,8 @@ public class ContactController {
     private ResponseContactDto addContact(
             @Parameter(name = "Contact", description = "Contact data pattern to add",
                     schema = @Schema(implementation = Contact.class))
-            /*@Valid*/ @Valid @RequestBody AddRequestContactDto dto) {
-        log.info("* Controller, addContact, POST, AddRequestContactDto={}", dto);
+            @Valid @RequestBody AddRequestContactDto dto) {
+        log.info("* Controller, addContact, POST, AddRequestContactDto=\n{}", dto);
         return contactService.saveContact(dto);
     }
 
@@ -105,8 +107,8 @@ public class ContactController {
     private ResponseContactDto updateContactById(
             @Parameter(name = "Contact", description = "Contact data to update",
                     schema = @Schema(implementation = Contact.class))
-            /*@Valid*/ @Valid @RequestBody AddRequestContactDto dto) {
-        log.info("* Controller, updateContactById, PUT, AddRequestContactDto={}", dto);
+            @Valid @RequestBody AddRequestContactDto dto) {
+        log.info("* Controller, updateContactById, PUT, AddRequestContactDto=\n{}", dto);
         return contactService.updateContactById(dto);
     }
 
@@ -125,7 +127,7 @@ public class ContactController {
             @Parameter(name = "Contact", description = "Contact data pattern",
                     schema = @Schema(implementation = Contact.class))
             @RequestBody FindRequestContactDto dto) {
-        log.info("* Controller, deleteMatchingContacts, DELETE, FindRequestContactDto={}", dto);
+        log.info("* Controller, deleteMatchingContacts, DELETE, FindRequestContactDto=\n{}", dto);
         return contactService.deleteMatchingContacts(dto);
     }
 }
